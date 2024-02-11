@@ -1,5 +1,7 @@
+import 'package:expense_tracker/model/expense_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key});
@@ -11,15 +13,20 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _texEditingController = TextEditingController();
   final _amountEditingController = TextEditingController();
-  void _presentDatePicker() {
+  Category _selectedCategory = Category.leisure;
+  DateTime? _selectedDate;
+  void _presentDatePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
     // final
-    showDatePicker(
+    final pickedDate = await showDatePicker(
         context: context,
         firstDate: firstDate,
         lastDate: now,
         initialDate: now);
+    setState(() {
+      _selectedDate = pickedDate as DateTime?;
+    });
   }
 
   @override
@@ -61,7 +68,9 @@ class _NewExpenseState extends State<NewExpense> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text('Selected date'),
+                  Text(_selectedDate == null
+                      ? 'No date selected'
+                      : formatter.format(_selectedDate!)),
                   IconButton(
                       onPressed: () {
                         _presentDatePicker();
@@ -71,15 +80,44 @@ class _NewExpenseState extends State<NewExpense> {
               ))
             ],
           ),
+          SizedBox(
+            height: 15,
+          ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              DropdownButton(
+                value: _selectedCategory,
+                hint: Text('Category'),
+                items: Category.values
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e.name.toUpperCase()),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  if (value == null) {
+                    return;
+                  }
+                  setState(() {
+                    _selectedCategory = value;
+                  });
+
+                  print(value);
+                },
+              ),
               TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: const Text('Cancel')),
               ElevatedButton(
-                  onPressed: () {}, child: const Text('Save Expense'))
+                  onPressed: () {
+                    print(_selectedDate);
+                  },
+                  child: const Text('Save Expense'))
             ],
           )
         ],
