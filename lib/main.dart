@@ -6,10 +6,11 @@ void main() {
     MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
         useMaterial3: true,
       ),
-      home:const Expenses(),
+      debugShowCheckedModeBanner: false,
+      home: const Expenses(),
     ),
   );
 }
