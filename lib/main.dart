@@ -38,7 +38,7 @@ void main() {
       ),
       debugShowCheckedModeBanner: false,
       home: const Expenses(),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
     ),
   );
 }
