@@ -1,18 +1,24 @@
 import 'package:expense_tracker/widget/expense.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 var kThemeColor = ColorScheme.fromSeed(seedColor: Colors.pink);
 var kdarkColor = ColorScheme.fromSeed(
     seedColor: Colors.pink.shade900, brightness: Brightness.dark);
 void main() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp
+  ]).then((value){
+    
+  });
   runApp(
     MaterialApp(
       title: 'Flutter Demo',
       darkTheme: ThemeData.dark().copyWith(
         colorScheme: kdarkColor,
-        cardTheme: CardTheme().copyWith(
+        cardTheme: const CardTheme().copyWith(
             color: kdarkColor.secondaryContainer,
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8)),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
               backgroundColor: kdarkColor.primaryContainer,
@@ -38,7 +44,7 @@ void main() {
       ),
       debugShowCheckedModeBanner: false,
       home: const Expenses(),
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
     ),
   );
 }
