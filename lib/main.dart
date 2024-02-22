@@ -6,8 +6,9 @@ var kThemeColor = ColorScheme.fromSeed(seedColor: Colors.pink);
 var kdarkColor = ColorScheme.fromSeed(
     seedColor: Colors.pink.shade900, brightness: Brightness.dark);
 void main() {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) {});
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+  //     .then((value) {
   runApp(
     MaterialApp(
       title: 'Flutter Demo',
@@ -44,6 +45,7 @@ void main() {
       themeMode: ThemeMode.system,
     ),
   );
+  // });
 }
 
 

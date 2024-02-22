@@ -3,6 +3,7 @@ import 'package:expense_tracker/widget/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/model/expense_model.dart';
 import 'package:expense_tracker/widget/new_expense.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -66,7 +67,8 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
-    Widget maincontent = Center(
+    final size = MediaQuery.of(context).size;
+    Widget maincontent = const Center(
       child: Text('No expense found try adding some'),
     );
     if (_registeredExpenses.isNotEmpty) {
@@ -78,24 +80,30 @@ class _ExpensesState extends State<Expenses> {
       });
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Expense Tracker',
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          IconButton(onPressed: _openAddExpenseOverlay, icon: Icon(Icons.add))
-        ],
-      ),
-      body: Column(
-        children: [
-          Chart(expenses: _registeredExpenses),
-          SizedBox(
-            height: 30,
+        appBar: AppBar(
+          title: Text(
+            'Expense Tracker',
+            style: TextStyle(color: Colors.black),
           ),
-          Expanded(child: maincontent),
-        ],
-      ),
-    );
+          actions: [
+            IconButton(onPressed: _openAddExpenseOverlay, icon: Icon(Icons.add))
+          ],
+        ),
+        body: size.width < 600
+            ? Column(
+                children: [
+                  Chart(expenses: _registeredExpenses),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Expanded(child: maincontent),
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(child: Chart(expenses: _registeredExpenses)),
+                  Expanded(child: maincontent),
+                ],
+              ));
   }
 }
