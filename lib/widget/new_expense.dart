@@ -73,88 +73,125 @@ class _NewExpenseState extends State<NewExpense> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
-      child: Column(
-        children: [
-          TextField(
-            controller: _texEditingController,
-            maxLength: 50,
-            decoration: const InputDecoration(label: Text('Title')),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _amountEditingController,
-                  decoration: const InputDecoration(
-                    prefix: Text('\$ '),
-                    label: Text('Amount'),
-                  ),
-                  keyboardType: TextInputType.number,
-                ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              Expanded(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(_selectedDate == null
-                      ? 'No date selected'
-                      : formatter.format(_selectedDate!)),
-                  IconButton(
-                      onPressed: () {
-                        _presentDatePicker();
-                      },
-                      icon: const Icon(Icons.calendar_month))
-                ],
-              ))
-            ],
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              DropdownButton(
-                value: _selectedCategory,
-                hint: Text('Category'),
-                items: Category.values
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(e.name.toUpperCase()),
+    final keybordSpace = MediaQuery.of(context).viewInsets.bottom;
+    return LayoutBuilder(builder: (ctx, constraints) {
+      final width = constraints.maxWidth;
+      return SizedBox(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, keybordSpace + 16),
+            child: Column(
+              children: [
+                if (width >= 600)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _texEditingController,
+                          maxLength: 50,
+                          decoration:
+                              const InputDecoration(label: Text('Title')),
+                        ),
                       ),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  if (value == null) {
-                    return;
-                  }
-                  setState(() {
-                    _selectedCategory = value;
-                  });
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: TextField(
+                          controller: _amountEditingController,
+                          decoration: const InputDecoration(
+                            prefix: Text('\$ '),
+                            label: Text('Amount'),
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
+                  )
+                else
+                  TextField(
+                    controller: _texEditingController,
+                    maxLength: 50,
+                    decoration: const InputDecoration(label: Text('Title')),
+                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _amountEditingController,
+                        decoration: const InputDecoration(
+                          prefix: Text('\$ '),
+                          label: Text('Amount'),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Expanded(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(_selectedDate == null
+                            ? 'No date selected'
+                            : formatter.format(_selectedDate!)),
+                        IconButton(
+                            onPressed: () {
+                              _presentDatePicker();
+                            },
+                            icon: const Icon(Icons.calendar_month))
+                      ],
+                    ))
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DropdownButton(
+                      value: _selectedCategory,
+                      hint: Text('Category'),
+                      items: Category.values
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e.name.toUpperCase()),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+                        setState(() {
+                          _selectedCategory = value;
+                        });
 
-                  print(value);
-                },
-              ),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Cancel')),
-              ElevatedButton(
-                onPressed: () => _submitExpenseData(),
-                child: const Text('Save Expense'),
-              )
-            ],
-          )
-        ],
-      ),
-    );
+                        print(value);
+                      },
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Cancel')),
+                    ElevatedButton(
+                      onPressed: () => _submitExpenseData(),
+                      child: const Text('Save Expense'),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
 }

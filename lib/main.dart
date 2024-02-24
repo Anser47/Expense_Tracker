@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 
 var kThemeColor = ColorScheme.fromSeed(seedColor: Colors.pink);
 var kdarkColor = ColorScheme.fromSeed(
-    seedColor: Colors.pink.shade900, brightness: Brightness.dark);
+    seedColor: Colors.pink.shade600, brightness: Brightness.dark);
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
   // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
